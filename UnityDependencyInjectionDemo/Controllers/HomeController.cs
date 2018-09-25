@@ -3,14 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using UnityDependencyInjectionDemo.Services;
+using UnityDependencyInjectionDemo.ViewModels;
 
 namespace UnityDependencyInjectionDemo.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IAnnouncer _announcer;
+
+        public HomeController(IAnnouncer announcer)
+        {
+            _announcer = announcer;
+        }
         public ActionResult Index()
         {
-            return View();
+            string announcement = _announcer.Announcement();
+
+            ViewModel model = new ViewModel
+            {
+                Data = announcement
+            };
+
+
+            return View("Index", model);
         }
 
         public ActionResult About()
